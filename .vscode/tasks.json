@@ -25,7 +25,7 @@
          {
             "label": "new index.tsx",
       
-            "command": "New-Item -Path '${cwd}/src/components/${input:dirName}/index.tsx' -ItemType File",
+            "command": "touch '${cwd}/src/components/${input:dirName}/index.tsx' -ItemType File",
       
             "type": "shell",
             "problemMatcher": [],
@@ -41,7 +41,7 @@
          {
             "label": "new styles.ts",
       
-            "command": "New-Item -Path '${cwd}/src/components/${input:dirName}/styles.ts' -ItemType File",
+            "command": "touch '${cwd}/src/components/${input:dirName}/styles.ts' -ItemType File",
       
             "type": "shell",
             "problemMatcher": [],
