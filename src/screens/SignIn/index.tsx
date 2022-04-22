@@ -5,6 +5,7 @@ import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
+import { useAuth } from '../../hooks/auth';
 
 import { 
   Container, 
@@ -17,6 +18,9 @@ import {
 } from './styles';
 
 export function SignIn() {
+
+  const { signInWithGoogle } = useAuth();
+
   return(
     <Container>
       <Header>
@@ -41,6 +45,7 @@ export function SignIn() {
           <SignInSocialButton 
             title="Entrar com o Google"
             svg={GoogleSvg}
+            onPress={signInWithGoogle}
           />
           <SignInSocialButton 
             title="Entrar com a Apple"
