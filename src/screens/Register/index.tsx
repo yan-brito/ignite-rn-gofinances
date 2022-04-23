@@ -8,6 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 
+import { useAuth } from '../../hooks/auth';
+
 import { Button } from '../../components/Form/Button';
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 import { InputForm } from '../../components/Form/InputForm';
@@ -23,7 +25,6 @@ import {
   Title, 
   TransactionsTypes 
 } from './styles';
-
 interface FormData {
   name: string;
   amount: string;
@@ -43,6 +44,8 @@ const schema = Yup.object().shape({
 export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+  const { user } = useAuth();
   
   const navigation = useNavigation();
   
@@ -90,7 +93,7 @@ export function Register() {
     }
     
     try {
-      const dataKey =  '@gofinances:transactions';
+      const dataKey =  `@gofinances:transactions_user:${user.id}`;
 
       const data = await AsyncStorage.getItem(dataKey);
 
@@ -104,7 +107,6 @@ export function Register() {
       await AsyncStorage.setItem(dataKey, JSON.stringify(formattedData));
 
       const actualData = await AsyncStorage.getItem(dataKey);
-      console.log(JSON.parse(actualData!));
 
       reset();
       setTransactionType('');
@@ -167,6 +169,7 @@ export function Register() {
         </Fields>
         <Button 
           title="Enviar"
+          // @ts-ignore - tinha que tipar melhor o react-hook-forms, sem tempo irmão
           onPress={handleSubmit(handleRegister)}
         />
       </Form>

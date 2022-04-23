@@ -22,6 +22,8 @@ import {
   Title 
 } from './styles';
 
+import { useAuth } from '../../hooks/auth';
+
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
 import { LoadContainer } from '../Dashboard/styles';
@@ -50,6 +52,8 @@ export function Resume() {
 
   const theme = useTheme();
 
+  const { user } = useAuth();
+
   function handleDateChange(action: 'next' | 'prev') {
     if(action === 'next') {
       setSelectedDate(addMonths(selectedDate, 1));
@@ -60,7 +64,7 @@ export function Resume() {
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey =  '@gofinances:transactions';
+    const dataKey =  `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
@@ -149,6 +153,7 @@ export function Resume() {
               </MonthSelectButton>
             </MonthSelect>
             <ChartContainer>
+              {/* @ts-ignore */}
               <VictoryPie 
                 data={totalByCategories}
                 colorScale={totalByCategories.map(category => category.color)}

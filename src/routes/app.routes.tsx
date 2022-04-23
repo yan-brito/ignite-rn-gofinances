@@ -14,6 +14,7 @@ export function AppRoutes() {
   const theme = useTheme();
 
   return(
+    // @ts-expect-error - Expo sdk 42 uses @react/types 16.x, and react-navigation 6.x needs a version >= 17
     <Navigator
       screenOptions={{
         headerShown: false,
@@ -31,6 +32,7 @@ export function AppRoutes() {
         component={Dashboard}
         options={{
           tabBarIcon: (({ size, color }) => 
+          // @ts-ignore
             <MaterialIcons 
               name="format-list-bulleted" 
               size={size} 
@@ -44,6 +46,7 @@ export function AppRoutes() {
         component={Register}
         options={{
           tabBarIcon: (({ size, color }) => 
+          // @ts-ignore
             <MaterialIcons 
               name="attach-money" 
               size={size} 
@@ -57,6 +60,7 @@ export function AppRoutes() {
         component={Resume}
         options={{
           tabBarIcon: (({ size, color }) => 
+          //@ts-ignore
             <MaterialIcons 
               name="pie-chart" 
               size={size} 
