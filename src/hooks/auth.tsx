@@ -44,7 +44,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
   const [userStorageLoading, setUserStorageLoading] = useState(true);
 
-  const userStorageKey = '@gofinances:user';
+  const userStorageKey = `@gofinances:user:${user.id}`;
 
   async function signInWithGoogle() {
     try {
@@ -85,7 +85,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if(credential) {
-        const name = credential.fullName?.givenName!;
+        const storedName = await getStoredUserName();
+        const name = storedName ? storedName : credential.fullName?.givenName!;
         const photo = `https://ui-avatars.com/api/?name=${name}&length=1`;
         
         const userLogged = {
@@ -105,9 +106,26 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signOut() {
+    const storedUser = {
+      email: '',
+      id: '',
+      name: user.name,
+      photo: undefined
+    };
+
     setUser({} as UserProps);
-    await AsyncStorage.removeItem(userStorageKey);
+    await AsyncStorage.setItem(userStorageKey, JSON.stringify(storedUser));
   }
+
+  async function getStoredUserName() {
+    const storedUser = await AsyncStorage.getItem(userStorageKey);
+    
+    if(storedUser) {
+      const { name } = JSON.parse(storedUser) as UserProps;
+      
+      return name;
+    };
+  };
 
   useEffect(() => {
     async function loadUserStorageData() {
